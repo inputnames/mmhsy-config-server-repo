@@ -1,0 +1,95 @@
+server:
+  port: 9911
+
+spring:
+  application:
+    name: mmhsy-item-admin
+  sleuth:
+    sampler:
+      percentage: 1.0
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.10.138:3306/mmhsy_item?useUnicode=true&character_set_server=utf8mb4&characterEncoding=UTF-8&characterSetResults=UTF-8&serverTimezone=GMT%2b8
+    username: root
+    password: 123456Aa
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 1
+      min-idle: 1
+      max-active: 8
+      max-wait: 60000
+      use-unfair-lock: true
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      filters: wall
+  kafka:
+    consumer:
+      group-id: mmhsy-item-admin
+
+#mybatis相关配置#
+mybatis:
+  mapper-locations: classpath*:mapper/**/*.xml
+  config-location: classpath:mybatis-config.xml
+  type-aliases-package: com.mmhsy.*.*.entity.*.domain,com.mmhsy.*.*.entity.*.*.domain
+
+mapper:
+  mappers:
+    - com.mmhsy.base.mapper.BaseMapper
+
+swagger:
+  enable: true
+  base-package: com.mmhsy
+  contact:
+    name: 妈妈好生意
+    url:
+    email: xxx@xxx.com
+  title: 供应商品服务
+  description: 供应商品服务
+  version: 1.0.0
+  resources:
+    - {name: "供应商品服务(后台)", location: "/v2/api-docs"}
+
+xxl:
+  job:
+    admin:
+      addresses: http://10.99.174.3:8700/mmhsy-job-admin
+    accessToken: 1234567
+    executor:
+      appname: mmhsy-item-executor
+      ip:
+      port: 9916
+      logpath: ./logs/${spring.application.name}/job
+      logretentiondays: -1
+
+threadPool:
+  coreSize: 20
+  maxCoreSize: 100
+  queueSize: 1000
+  keepAlive: 1
+
+ribbon:
+  ReadTimeout: 30000
+  SocketTimeout: 30000
+
+#库存通，调用妈妈好stock地址
+mamahao:
+  cloudwarehouse:
+    service-url: 192.168.10.74:8012
+    supplier2Storage:
+      15: 1800000080
+      17: 1800000080
+      18: 1800000080
+      19: 1800000080
+      20: 1800000080
+item:
+  analyzer: jieba,ik

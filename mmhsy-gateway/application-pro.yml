@@ -1,0 +1,100 @@
+server:
+  port: 9900
+
+spring:
+  application:
+    name: mmhsy-gateway
+  main:
+    allow-bean-definition-overriding: true
+    web-application-type: reactive
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowCredentials: false
+            maxAge: 1800
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+      default-filters:
+        - StripPrefix=3
+        - RequestSize=maxSize,5000000
+      routes:
+        - id: mmhsy-item-admin
+          uri: lb://mmhsy-item-admin
+          predicates:
+            - Path=/v1/admin/item/**
+        - id: mmhsy-order-admin
+          uri: lb://mmhsy-order-admin
+          predicates:
+            - Path=/v1/admin/order/**
+        - id: mmhsy-system-admin
+          uri: lb://mmhsy-system-admin
+          predicates:
+            - Path=/v1/admin/system/**
+        - id: mmhsy-promotion-admin
+          uri: lb://mmhsy-promotion-admin
+          predicates:
+            - Path=/v1/admin/promotion/**
+        - id: mmhsy-dw-admin
+          uri: lb://mmhsy-dw-admin
+          predicates:
+            - Path=/v1/admin/dw/**
+        - id: mmhsy-system-api
+          uri: lb://mmhsy-system-api
+          predicates:
+            - Path=/v1/api/system/**
+        - id: mmhsy-item-api
+          uri: lb://mmhsy-item-api
+          predicates:
+            - Path=/v1/api/item/**
+        - id: mmhsy-order-api
+          uri: lb://mmhsy-order-api
+          predicates:
+            - Path=/v1/api/order/**
+        - id: mmhsy-promotion-api
+          uri: lb://mmhsy-promotion-api
+          predicates:
+            - Path=/v1/api/promotion/**
+        - id: mmhsy-dw-api
+          uri: lb://mmhsy-dw-api
+          predicates:
+            - Path=/v1/api/dw/**
+
+swagger:
+  agg-resources:
+    - {name: "系统配置服务(后台)", location: "/v1/admin/system/v2/api-docs"}
+    - {name: "供应商品服务(后台)", location: "/v1/admin/item/v2/api-docs"}
+    - {name: "用户订单服务(后台)", location: "/v1/admin/order/v2/api-docs"}
+    - {name: "优惠促销服务(后台)", location: "/v1/admin/promotion/v2/api-docs"}
+    - {name: "数据仓库(后台)", location: "/v1/admin/dw/v2/api-docs"}
+    - {name: "系统配置服务(API)", location: "/v1/api/system/v2/api-docs"}
+    - {name: "供应商品服务(API)", location: "/v1/api/item/v2/api-docs"}
+    - {name: "用户订单服务(API)", location: "/v1/api/order/v2/api-docs"}
+    - {name: "优惠促销服务(API)", location: "/v1/api/promotion/v2/api-docs"}
+    - {name: "数据仓库(API)", location: "/v1/api/dw/v2/api-docs"}
+
+hystrix:
+  threadpool:
+    default:
+      coreSize: 1000
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+
+ribbon:
+  ReadTimeout: 30000
+  SocketTimeout: 30000

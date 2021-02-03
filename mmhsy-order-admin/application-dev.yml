@@ -1,0 +1,95 @@
+server:
+  port: 9915
+
+spring:
+  application:
+    name: mmhsy-order-admin
+  sleuth:
+    sampler:
+      percentage: 1.0
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.10.133:3306/mmhsy_order?useUnicode=true&character_set_server=utf8mb4&characterEncoding=UTF-8&characterSetResults=UTF-8&serverTimezone=GMT%2b8
+    username: root
+    password: 123456Aa
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 1
+      min-idle: 1
+      max-active: 8
+      max-wait: 60000
+      use-unfair-lock: true
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      filters: wall
+
+#mybatis相关配置#
+mybatis:
+  mapper-locations: classpath*:mapper/**/*.xml
+  config-location: classpath:mybatis-config.xml
+  type-aliases-package: com.mmhsy.*.*.entity.*.domain,com.mmhsy.*.*.entity.*.*.domain
+
+mapper:
+  mappers:
+    - com.mmhsy.base.mapper.BaseMapper
+
+swagger:
+  enable: true
+  base-package: com.mmhsy
+  contact:
+    name: 妈妈好生意
+    url:
+    email: xxx@xxx.com
+  title: 用户订单服务
+  description: 用户订单服务
+  version: 1.0.0
+  resources:
+    - {name: "用户订单服务(后台)", location: "/v2/api-docs"}
+
+payment:
+  profile: dev
+  alipay-app-id: 2021001159634766
+  alipay-private-key: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCRwNJ+akdST4QxbRJqEx3EP+yaTuiiYXiNvjedpdq410ovy7FmWGgaxC63RFHNfHm7wa0UMiRt8CIpQ90efCxbECdidZ9W/XICPu6GoLupwAp8LeTNTOYqnmhYnekB01DmfM9y52YnPlys+Mp0K8d9SMUAmgaCsZEk4jdRolx31ohtxJtYEihQBx1/s8Tn6IGuCojlsP05Fqjrzk4h7dWZvQkWibSGJDWmGERFqvSWUFUPJqMPsV9lHXp+0/vz7ulQW3EruIBh5XWWsTlVVKArjE02Z1T2vYob5kqLU8zdG9sWNbhhQ/2MmFbXkStxGP1IHzlo/rRxSz9Ew0oZenHNAgMBAAECggEALGLiN2k6KxDYGw0yTGdh6z/kV+Gr6rdwNQo2eaXmg9/cUc3gSmCl43DXISyHFOLRV6JViQ70FR7J6HMoRX5fK6QxukRDsAQi0hhEH2+Xdsxq5QI86WB/v37aHBKKwOmPe4GK010wuMa/BlYFoXcrmzWr+NDvJqHYp7jUS+H78upFUzBDhu+LDYFFtjKGMhOtbnEDh6QlD+v2fiFumcywl/NpSmK4Uq0p27qBAX8ov0YwyZGoF6rVOQ2Riq6oQvOySPpdSG0QijbL8IMXKUqbsOGBtouUH/zZjRfkS4mCnyhW+Di/iVCKDZDV/fjufVkcYX/XyNFsDAugXJoylDYWgQKBgQDgDYKIrV3X02bLimWdfZ75lAKJsfZPlmQygBXw6jEO1F5rYxBOyxFqIIdIJamA5B7X8m1x7cGO36uBars3AXGtDbrKwK+S4H3MnUkdR1SWAkq5GQKHtY8NV5ZhRij5mBDSVivYAT6sjRXwfv65i4ZTFNJifGDcfuUVjFtpQnc9fQKBgQCmiS5psezN67qgG1JA6Ez5vy9mz0XXbMJwi3sKwBjKtqTq2EmRyUQ/slp2Aa5A2DNIoKFC3jluAwlSvE6AiIoL5OFE0hT/kzebvucTJdx4h9ovk52q9gDUUwGSdv1Ww0yUBJBOTRZVQVn5lr7E1QgCVtqCaXVgVGaruzHjK012kQKBgGBk75gmHo3QohVIAdf0SAVQrJbZPgOXzJv9h3MTDvA2ZjkFceq0a1WhkRJ1Qav2eV6nKnctt2zkxkDzzoAn2uR9V7QLmn4yn2z87ovuOHIhokxoejIw5s7ys/w91zsrNXGJKWvRfUl3mczSlnz1jmEIQEum/3VeEulmbZ2nvu1xAoGAXBogTho14gjN9QBHNFiFQdZni890S9j9jCrHyMFGtM3gVXV68qLCGQw1lXAGhBxN+IvFw+qNDnelb1lvfQyGdF+H6nzZWiN8LKmeuGtHDG3t0EQufb+B4+toQi2GnLZ0IqSHfpaJlGsJLM0fAlLjFBAe1uMmJDlpcu6bf4ySUdECgYEAo8SwA6qy789oVIUGOcxkOjGVPCqvPbMBE/SMnXePFx01FsOFY9skVT6v5KxLBjvXC4m8mqaCoq4JOdSdx79OxIunP522MbmfKlHnUJVwea1SXJIIZSBMcyMB08WpBItmRC1/4FELHWz3Y9vJ96yyLwD9DHz3ElHnTKVkYZ3mTeQ=
+  alipay-public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkf/sknltMxH5cFGdYe/7ytQLQ2fEVZQ7RoFUYla9bnJuvUKUjOnk7BdMTtwnNTiZqd+4Mi2DYRABlKVEE35hq7Tj48cKcJhHVETBTYBu9VMbsYCgZcX2DVAGegAx145IqdEuD2g1JCFx8gbHRtUxQ8CmF4R2CRKfy/GJSuiJSC5fJEwPUPPoWAwAruHSKlHwbQtnUbzEuarlJGlVqMaAb/ZEDNP34fx6WaOH2uCH8UXcG2cy9ksYug52so1+vtfllv+K740OQzxuO/S8R0l4+Fc/6HOdRpUoMLAa4sntkhCXu+DghoJrLyxsE00Bow9jvt2BzKQ0ZgXgWj4xMyT/yQIDAQAB
+  alipay-notify-url: http://b2b-dev-gw.mamhao.com/v1/api/order/payment/alipay/callback
+  alipay-refund-notify-url: http://b2b-dev-gw.mamhao.com/v1/api/order/payment/refund/callback
+  wx-applet-app-id: wxd794038590f0521b
+  wx-app-id: wxd794038590f0521b
+  wx-mch-id: 1348412601
+  wx-payment-key: LACDDAXXSAZ33111309JDMDKKKKKDGHT
+  wx-notity-url: http://b2b-dev-gw.mamhao.com/v1/api/order/payment/wx/callback
+  wx-refund-notify-url: http://b2b-dev-gw.mamhao.com/v1/api/order/payment/refund/wx/callback
+
+xxl:
+  job:
+    admin:
+      addresses: http://192.168.10.134:8700/mmhsy-job-admin
+    accessToken: 1234567
+    executor:
+      appname: mmhsy-order-executor
+      ip:
+      port: 9925
+      logpath: ./logs/${spring.application.name}/job
+      logretentiondays: -1
+
+threadPool:
+  coreSize: 20
+  maxCoreSize: 100
+  queueSize: 1000
+  keepAlive: 1
+
+ribbon:
+  ReadTimeout: 30000
+  SocketTimeout: 30000
+user:
+  coupon: 174,175

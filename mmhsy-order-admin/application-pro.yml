@@ -1,0 +1,98 @@
+server:
+  port: 9915
+
+spring:
+  application:
+    name: mmhsy-order-admin
+  sleuth:
+    sampler:
+      percentage: 1.0
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://rm-bp11b93ky86snb866.mysql.rds.aliyuncs.com:3306/mmhsy_order?useUnicode=true&character_set_server=utf8mb4&characterEncoding=UTF-8&characterSetResults=UTF-8&serverTimezone=GMT%2b8
+    username: mamahao_b2b_rw
+    password: '{cipher}7b1d126e41e94f5944489847ac3af81844e7547213ce48886c430311adcbbb0e0b549287f8b99b050100bfe0747c5cad'
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 1
+      min-idle: 1
+      max-active: 8
+      max-wait: 60000
+      use-unfair-lock: true
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      filters: wall
+
+#mybatis相关配置#
+mybatis:
+  mapper-locations: classpath*:mapper/**/*.xml
+  config-location: classpath:mybatis-config.xml
+  type-aliases-package: com.mmhsy.*.*.entity.*.domain,com.mmhsy.*.*.entity.*.*.domain
+
+mapper:
+  mappers:
+    - com.mmhsy.base.mapper.BaseMapper
+
+swagger:
+  enable: true
+  base-package: com.mmhsy
+  contact:
+    name: 妈妈好生意
+    url:
+    email: xxx@xxx.com
+  title: 用户订单服务
+  description: 用户订单服务
+  version: 1.0.0
+  resources:
+    - {name: "用户订单服务(后台)", location: "/v2/api-docs"}
+
+payment:
+  profile: pro
+#  notity_url: http://b2b-gw.mamahao.com/v1/api/order/payment/alipay/callback
+#  refund_notify_url: http://b2b-gw.mamahao.com/v1/api/order/payment/refund/callback
+  alipay-app-id: 2021001100673290
+  alipay-private-key: MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDtNxvFehko1A/gM8/OU1a8raNGm4A6SVxzmxGkQHlVglLMe/3nYCS0n+Zxofr8cjv6J3f95a1nCF/trGwMawHKyfoin8Lohf0iTHoYxsEzPP/uasF1ytNxk8qyVq2yJEDdI0D3tNB7A33HMiw2Y3+3M/ogZ9qgFlI5v/XhDhF6RRvwJl+ulpMgRdUABEw9C8YJDMVKJZ9rBstf2PLIW9zHXUM5RdVAoXVzfKknejc0SGFZqiqufJ8LHK45KZ54ot4+3pB9E0JtxUwnT9C/dUQ0FqjmFhwkeG+XYadaKQk962Afuin3dd0YJ/+YYuyJj6tbmcQstdsb9ryY2WDvtmuhAgMBAAECggEAZ5s6NfYuJvb4OCRpDuS3bZEpTx170/lWt+dyvRqr4/0XzNga/YOwhHOSYu8sgDYknA3BCtPV+Lpfq58zUfkqvzeYWKcOqiBbfy+H5Gpq18Y8whU+igQcde7nCR1yn+vVqMBND+OZayELPoVbaiXrEklRZfX2NxWItFBzQ+ixGYVedM5w2pdC61D9jHvt75+6LsOZrcqfLuG/3HmGf7UFmplfZlDTChspoRBZfgrZ9y2TwpTC6ysWP2G0J8roPoOHmesx/P7B09QsZK0VkgqtFPzyP7HrVPyHXJxXbDq+9WuzoBXPbQMFtGdn948xc41nL8L9Yf7S8T6n/ljlVrGAAQKBgQD6GhLI9B/IB5bUtJilwd1GG+e5P42R4ajG6xUDiExnX17D0Ujh20dF4bTVv+Wp6bg3aCNVGaEuud4pAE0G9eVr0F44dVTYkIDhpJId+tJPo4MgdQzRp3FDMq0IZJlCQvm4J9UJMe+ZwnRcb+HpjEZF6vMUJdfwnpFT01W2aenZ4QKBgQDyzzxSGrIOwhM7jyngMFzrHohseeJ9fw5S45TUQ/bMaZPNHEm1xD3Ru1UcZfeldNowqudgGYaR2fk63rgaEuBO0smAvVOshjX2GAyYltfosNOTWNDP75QDYs/qlKpvsJTZOzWNf/UjgDouQek/o0oEBDxkbVunYHnuvKJmIEhJwQKBgANP/Re0RAd+Mj029x6a5rda/0Kw2Msp1fZsfqbBU2G7HaIyT2jOYq9GQgLiu8P4WHxDYNRrtnrL82lPm7WP5C39YIIW67zCjTJv34+OFuL/I2l2o2jTcuiU7z3BN1ZtVKlfva6VfrrmnGvs/2z8cqHSbs3Bgo6pSvt1PRlhZbuBAoGBAJ/izLK393X2YBnBDO8eiaEdavIbVIQU7Uaxq6gW1OYHw5a1wOfbQGXh+IqJrogaKS8Q6ukCBfX21cHpNMuekGv3K08F3JpnihLyBSFZevUzsy58toumFA4ivAyZNp3zZiChd4MktjRZVHZvWntYN/3rGCV9SXQu+Du3pSygp1lBAoGBAIfD0pTiKoe8isat/S7vkWORMPp0WGUMLFgx8rSAJ5rV4i60rgBC6ojKzqj2LOpKFJTIkFbiKMz9MVEXzZhzTyZbV79tQE9ZuiBJDspNvW37UXANPBh0aK1WniLH7jEzkoAMAY0mwRMxU7iQaCHufK+dCyBwvBwfxGzM3g0lfLq3
+  alipay-public-key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAt/pZ8YZl8w6eJCh1HpNYLe4NmJUfvz+VvffWD2jhku5f2Vz4WEdUF6Vtrz/YwJY9BruJFcNe9qpYnWWoM6gYLevuXwRdk+xl+kNy7j2V1N10N5Uife8WzeLBzEuekS9VEoq34GveEq3ASz0ZYolvtu0EpIvTCNkZvYasL2BM2WovvjWleYKbJjL45vbk0eAKKW5fEeTDG9cZJBIPTSwUir9R7HfiEcTUAoOP7JVE6hSKpffyGcxVMVmJVlLHzWliRkDTb3EQkv9PMPpiWB+hCaaPPo/qnSR6gVbTGgUE0moWZPq3u9LNbw/5QW7A4CUVlKvCREQcC8K8Tk6ddUN5AQIDAQAB
+  alipay-notify-url: http://b2b-gw.mamahao.com/v1/api/order/payment/alipay/callback
+  alipay-refund-notify-url: http://b2b-gw.mamahao.com/v1/api/order/payment/refund/callback
+  wx-applet-app-id: wxf05c810d2bb8c832
+  wx-app-id: wxf05c810d2bb8c832
+  wx-mch-id: 1570493581
+  wx-payment-key: MMHAOSHENGYI201912237YANGXIAOWEI
+  wx-notity-url: http://b2b-gw.mamahao.com/v1/api/order/payment/wx/callback
+  wx-refund-notify-url: http://b2b-gw.mamahao.com/v1/api/order/payment/refund/wx/callback
+
+xxl:
+  job:
+    admin:
+      addresses: http://b2b-job.mamahao.com/mmhsy-job-admin/
+    accessToken: 1234567
+    executor:
+      appname: mmhsy-order-executor
+      ip:
+      port: 9925
+      logpath: ./logs/${spring.application.name}/job
+      logretentiondays: -1
+
+threadPool:
+  coreSize: 20
+  maxCoreSize: 100
+  queueSize: 1000
+  keepAlive: 1
+
+ribbon:
+  ReadTimeout: 30000
+  SocketTimeout: 30000
+
+user:
+  coupon: 301,302

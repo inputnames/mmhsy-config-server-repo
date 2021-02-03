@@ -1,0 +1,140 @@
+#eureka相关配置#
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    service-url:
+      defaultZone: http://172.16.30.195:9901/eureka/,http://172.16.30.196:9901/eureka/
+    registry-fetch-interval-seconds: 5
+    lease-renewal-interval-in-seconds: 10     # 心跳时间，即服务续约间隔时间（缺省为30s）
+    lease-expiration-duration-in-seconds: 20  # 发呆时间，即服务续约到期时间（缺省为90s）
+
+#hystrix相关配置#
+hystrix:
+  threadpool:
+    default:
+      coreSize: 1000
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+
+ribbon:
+  ReadTimeout: 30000
+  SocketTimeout: 30000
+  #缓存刷新时间
+  ServerListRefreshInterval: 5000
+
+spring:
+  #redis哨兵配置#
+  redis:
+    sentinel:
+      master: redis01-b2b
+      nodes: 172.16.30.187:16379,172.16.30.188:16379
+    database: 0
+    lettuce:
+      shutdown-timeout: 1000
+      pool:
+        max-active: 20
+        max-wait: -1
+        min-idle: 0
+        max-idle: 5
+  #kafka配置#
+  kafka:
+    bootstrap-servers: 172.16.30.211:9092,172.16.30.212:9092,172.16.30.213:9092
+    producer:
+      retries: 10
+      batch-size: 16384
+      buffer-memory: 33554432
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      # 手动提交
+      enable-auto-commit: false
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        session.timeout.ms: 60000
+      max-poll-records: 100
+    listener:
+      log-container-config: false
+      concurrency: 5
+      # 手动提交
+      ack-mode: manual_immediate
+
+#jetcache相关配置#
+jetcache:
+  statIntervalMinutes: 15
+  areaInCacheName: false
+  local:
+    default:
+      type: linkedhashmap
+      keyConvertor: fastjson
+      limit: 100
+      expireAfterAccessInMillis: 30000
+  remote:
+    default:
+      type: redis.lettuce
+      keyConvertor: fastjson
+      valueEncoder: java
+      valueDecoder: java
+      poolConfig:
+        minIdle: 5
+        maxIdle: 20
+        maxTotal: 50
+      expireAfterWriteInMillis: 5000
+      uri: redis-sentinel://172.16.30.187:16379,172.16.30.188:16379/?sentinelMasterId=redis01-b2b
+#单点：uri: redis://@192.168.10.133:6379/15?timeout=5s
+#集群：uri:
+#        - redis://@172.16.30.187:16379/0?timeout=5s
+#        - redis://@172.16.30.188:16379/0?timeout=5s
+
+
+#阿里云OSS相关配置#
+alioss:
+  oss-endpoint: oss-cn-hangzhou.aliyuncs.com
+  oss-access-key-id: LTAI4Fw1gUhpRxAexTXUSnxu
+  oss-access-key-secret: lUm0ABc2IbmQTr4T9SbwJwL1zSKOXv
+  oss-bucket-name: b2b-imgs
+  oss-host: http://b2b-img.mamahao.com
+  oss-default-folder: goods
+#  oss-role-ram-arn: acs:ram::1771849223178984:role/ramb2bossrole
+#  oss-role-ram-session-token:
+
+#ES相关配置#
+mmhsy:
+  data:
+    elasticsearch:
+      clusterName: b2c-es
+      clusterNodes: 172.16.30.203:9200,172.16.30.204:9200
+      
+#暴露端点  
+management:
+  endpoints:
+    web:
+      exposure:
+        include: service-registry,info,health
+        
+#唯小宝feign配置
+mamahao:
+  achievement:
+    service-url: 172.18.251.117:8522
+  order-server:
+    service-url: 172.18.175.9:8520
+  member:
+    service-url: 172.18.251.142:8504
+  pos:
+    service-url: 172.18.96.226:8518
+  cloudwarehouse:
+    service-url: 172.18.92.84:8506
+  goods:
+    service-url: 172.18.92.84:8011
+kuadi100:
+  customer: 9C85C0149B384787F7B1E162847377A4
+  key: tRUPFYnB6206
+
+

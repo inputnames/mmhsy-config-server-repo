@@ -1,0 +1,81 @@
+### web
+server:
+  port: 8700
+  servlet:
+    context-path: /mmhsy-job-admin
+
+### actuator
+management:
+  context-path: /actuator
+  health:
+    mail:
+      enabled: false
+
+### resources
+spring:
+  application:
+    name: mmhsy-job-admin
+  mvc:
+    servlet:
+      load-on-startup: 0
+    static-path-pattern: /static/**
+  resources:
+    static-locations: classpath:/static/
+
+  ### freemarker
+  freemarker:
+    templateLoaderPath: classpath:/templates/
+    suffix: .ftl
+    charset: UTF-8
+    request-context-attribute: request
+    settings:
+      number_format: 0.##########
+
+  ### xxl-job, datasource
+  datasource:
+    url: jdbc:mysql://192.168.10.133:3306/mmhsy_job?useUnicode=true&character_set_server=utf8mb4&characterEncoding=UTF-8&characterSetResults=UTF-8&serverTimezone=GMT%2b8
+    username: root
+    password: 123456Aa
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: org.apache.tomcat.jdbc.pool.DataSource
+    tomcat:
+      max-wait: 10000
+      max-active: 60
+      test-on-borrow: true
+      validation-query: SELECT 1
+      validation-interval: 30000
+
+  ### xxl-job email
+  mail:
+    host: smtp.qq.com
+    prot: 25
+    username: xxx@qq.com
+    password: xxx
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+### mybatis
+mybatis:
+  mapper-locations: classpath:/mybatis-mapper/*Mapper.xml
+
+### xxl-job
+xxl:
+  job:
+    accessToken: 1234567
+    i18n:
+    triggerpool:
+      fast:
+        max: 200
+      slow:
+        max: 100
+    logretentiondays: 30
+
+ribbon:
+  ReadTimeout: 30000
+  SocketTimeout: 30000

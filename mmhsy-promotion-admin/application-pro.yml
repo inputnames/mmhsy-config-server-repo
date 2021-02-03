@@ -1,0 +1,87 @@
+server:
+  port: 9917
+
+spring:
+  application:
+    name: mmhsy-promotion-admin
+  sleuth:
+    sampler:
+      percentage: 1.0
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://rm-bp11b93ky86snb866.mysql.rds.aliyuncs.com:3306/mmhsy_promotion?useUnicode=true&character_set_server=utf8mb4&characterEncoding=UTF-8&characterSetResults=UTF-8&serverTimezone=GMT%2b8
+    username: mamahao_b2b_rw
+    password: '{cipher}7b1d126e41e94f5944489847ac3af81844e7547213ce48886c430311adcbbb0e0b549287f8b99b050100bfe0747c5cad'
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 1
+      min-idle: 1
+      max-active: 8
+      max-wait: 60000
+      use-unfair-lock: true
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      filters: wall
+  kafka:
+    consumer:
+      group-id: mmhsy-promotion-admin
+
+#mybatis相关配置#
+mybatis:
+  mapper-locations: classpath*:mapper/**/*.xml
+  config-location: classpath:mybatis-config.xml
+  type-aliases-package: com.mmhsy.*.*.entity.*.domain,com.mmhsy.*.*.entity.*.*.domain
+
+mapper:
+  mappers:
+    - com.mmhsy.base.mapper.BaseMapper
+
+swagger:
+  enable: true
+  base-package: com.mmhsy
+  contact:
+    name: 妈妈好生意
+    url:
+    email: xxx@xxx.com
+  title: 促销配置服务
+  description: 促销配置服务
+  version: 1.0.0
+  resources:
+    - {name: "促销配置服务(后台)", location: "/v2/api-docs"}
+
+xxl:
+  job:
+    admin:
+      addresses: http://b2b-job.mamahao.com/mmhsy-job-admin/
+    accessToken: 1234567
+    executor:
+      appname: mmhsy-promotion-executor
+      ip:
+      port: 9927
+      logpath: ./logs/${spring.application.name}/job
+      logretentiondays: -1
+
+threadPool:
+  coreSize: 20
+  maxCoreSize: 100
+  queueSize: 1000
+  keepAlive: 1
+
+ribbon:
+  ReadTimeout: 30000
+  SocketTimeout: 30000
+
+jpush:
+  jpush-key: 214b84a60bee444a070d889f
+  jpush-secret: eee9fd65600c46e64b49d668
+  option: true

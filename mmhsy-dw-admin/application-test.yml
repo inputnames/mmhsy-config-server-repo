@@ -1,0 +1,134 @@
+server:
+  port: 9926
+
+spring:
+  application:
+    name: mmhsy-dw-admin
+  sleuth:
+    sampler:
+      percentage: 1.0
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+  main:
+    allow-bean-definition-overriding: true
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.10.70:3306/db_gd?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: mamahao
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 1
+      min-idle: 1
+      max-active: 8
+      max-wait: 60000
+      use-unfair-lock: true
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      validation-query: SELECT 'x'
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      filters: wall
+    mamahao-pos:
+      url: jdbc:mysql://192.168.10.70:3306/mamahao-pos?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
+      username: root
+      password: mamahao
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
+      druid:
+        initial-size: 1
+        min-idle: 1
+        max-active: 8
+        max-wait: 60000
+        use-unfair-lock: true
+        time-between-eviction-runs-millis: 60000
+        min-evictable-idle-time-millis: 300000
+        validation-query: SELECT 'x'
+        test-while-idle: true
+        test-on-borrow: false
+        test-on-return: false
+        filters: wall
+    mamahao-user:
+      url: jdbc:mysql://192.168.10.70:3306/mamahao-user?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&rewriteBatchedStatements=true&serverTimezone=Asia/Shanghai
+      username: root
+      password: mamahao
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
+      druid:
+        initial-size: 1
+        min-idle: 1
+        max-active: 8
+        max-wait: 60000
+        use-unfair-lock: true
+        time-between-eviction-runs-millis: 60000
+        min-evictable-idle-time-millis: 300000
+        validation-query: SELECT 'x'
+        test-while-idle: true
+        test-on-borrow: false
+        test-on-return: false
+        filters: wall
+    mmhsy-dw:
+      url: jdbc:mysql://192.168.10.133:3306/mmhsy_dw?useUnicode=true&character_set_server=utf8mb4&characterEncoding=UTF-8&characterSetResults=UTF-8&serverTimezone=GMT%2b8
+      username: root
+      password: 123456Aa
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      type: com.alibaba.druid.pool.DruidDataSource
+      druid:
+        initial-size: 1
+        min-idle: 1
+        max-active: 8
+        max-wait: 60000
+        use-unfair-lock: true
+        time-between-eviction-runs-millis: 60000
+        min-evictable-idle-time-millis: 300000
+        validation-query: SELECT 'x'
+        test-while-idle: true
+        test-on-borrow: false
+        test-on-return: false
+        filters: wall
+  kafka:
+    consumer:
+      group-id: mmhsy-dw-admin
+
+#mybatis相关配置#
+mybatis:
+  mapper-locations: classpath*:mapper/**/*.xml
+  config-location: classpath:mybatis-config.xml
+  type-aliases-package: com.mmhsy.*.*.entity.*.domain,com.mmhsy.*.*.entity.*.*.domain
+
+mapper:
+  mappers:
+    - com.mmhsy.base.mapper.BaseMapper
+
+swagger:
+  enable: true
+  base-package: com.mmhsy
+  contact:
+    name: 妈妈好生意
+    url:
+    email: xxx@xxx.com
+  title: 数据仓库服务
+  description: 数据仓库服务
+  version: 1.0.0
+  resources:
+    - {name: "数据仓库服务(API)", location: "/v2/api-docs"}
+
+threadPool:
+  coreSize: 20
+  maxCoreSize: 100
+  queueSize: 1000
+  keepAlive: 1
+
+ribbon:
+  ReadTimeout: 30000
+  SocketTimeout: 30000
+
+#hbase相关配置
+mmhsy:
+  data:
+    hbase:
+      nodes: 192.168.10.111,192.168.10.112,192.168.10.113
+      clientPort: 2181
